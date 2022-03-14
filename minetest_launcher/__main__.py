@@ -22,10 +22,12 @@ def template(c):
 class ServerWidget(Gtk.Box):
     __gtype_name__ = "ServerWidget"
     server_name = Gtk.Template.Child("server_name")
+    address = Gtk.Template.Child("address")
 
     def __init__(self, server):
         super().__init__()
         self.server_name.set_label(server["name"])
+        self.address.set_label(f'{server["address"]}:{server["port"]}')
 
 
 @template
