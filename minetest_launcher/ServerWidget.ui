@@ -1,0 +1,7 @@
+<interface>
+    <template class="ServerWidget" parent="GtkBox">
+        <child>
+            <object class="GtkLabel" id="server_name"></object>
+        </child>
+    </template>
+</interface>

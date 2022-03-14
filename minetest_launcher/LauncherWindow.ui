@@ -1,0 +1,11 @@
+<interface>
+    <template class="LauncherWindow" parent="GtkApplicationWindow">
+        <child>
+            <object class="GtkScrolledWindow">
+                <child>
+                    <object class="ServerList" id="server_list"></object>
+                </child>
+            </object>
+        </child>
+    </template>
+</interface>

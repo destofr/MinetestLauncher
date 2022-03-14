@@ -1,0 +1,5 @@
+<interface>
+    <template class="ServerList" parent="GtkBox">
+        <property name="orientation">GTK_ORIENTATION_VERTICAL</property>
+    </template>
+</interface>
