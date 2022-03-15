@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Minetest Launcher
+Exec=python -m minetest_launcher
+StartupWMClass=io.github.destofr.MinetestLauncher
+Terminal=False
