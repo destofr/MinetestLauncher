@@ -36,6 +36,7 @@ class ServerList(Gtk.Box):
 
     def __init__(self):
         super().__init__()
+        self.add_css_class("ServerList")
 
     def populate(self, servers):
         for server in servers:
@@ -49,6 +50,11 @@ class LauncherWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
         super().__init__(application=app)
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(resource_string(__name__, "main.css"))
+        Gtk.StyleContext().add_provider_for_display(
+            self.get_display(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER
+        )
         servers = requests.get("https://servers.minetest.net/list").json()["list"]
         self.server_list.populate(servers)
         self.present()
