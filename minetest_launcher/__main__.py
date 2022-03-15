@@ -66,17 +66,43 @@ class LoginManager(configparser.ConfigParser):
 
 
 @template
+class PasswordEditor(Gtk.Window):
+    __gtype_name__ = "PasswordEditor"
+    username = Gtk.Template.Child("username")
+    password = Gtk.Template.Child("password")
+
+    def __init__(self, address):
+        super().__init__(title=f"Login: {address}")
+        self.address = address
+        if address in passwords:
+            self.username.set_text(passwords[address]["username"])
+            self.password.set_text(passwords[address]["password"])
+        self.connect("close-request", lambda _w: self.on_close_request())
+        self.present()
+
+    def on_close_request(self):
+        passwords[self.address] = dict(
+            username=self.username.get_text(), password=self.password.get_text()
+        )
+        passwords.save()
+
+
+@template
 class ServerWidget(Gtk.Box):
     __gtype_name__ = "ServerWidget"
     server_name = Gtk.Template.Child("server_name")
     address = Gtk.Template.Child("address")
     run_button = Gtk.Template.Child("run_button")
+    edit_button = Gtk.Template.Child("edit_button")
 
     def __init__(self, server):
         super().__init__()
         self.data = server
         self.server_name.set_label(server["name"])
         self.address.set_label(f'{server["address"]}:{server["port"]}')
+        self.edit_button.connect(
+            "clicked", lambda _w: PasswordEditor(self.data["address"])
+        )
         self.run_button.connect(
             "clicked", lambda _w: launch(self.data["address"], self.data["port"])
         )

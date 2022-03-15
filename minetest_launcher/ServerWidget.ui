@@ -13,6 +13,11 @@
             </object>
         </child>
         <child>
+            <object class="GtkButton" id="edit_button">
+                <property name="icon-name">document-edit-symbolic</property>
+            </object>
+        </child>
+        <child>
             <object class="GtkButton" id="run_button">
                 <property name="icon-name">media-playback-start-symbolic</property>
             </object>
