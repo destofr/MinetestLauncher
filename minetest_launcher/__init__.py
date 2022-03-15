@@ -1,2 +1,2 @@
 APP_ID = "io.github.destofr.MinetestLauncher"
-VERSION = "0.0.2"
+VERSION = "0.1.0"
