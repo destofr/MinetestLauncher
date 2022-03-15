@@ -13,7 +13,7 @@
             </object>
         </child>
         <child>
-            <object class="GtkButton">
+            <object class="GtkButton" id="run_button">
                 <property name="icon-name">media-playback-start-symbolic</property>
             </object>
         </child>
