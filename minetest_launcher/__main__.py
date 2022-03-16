@@ -21,6 +21,7 @@ from gi.repository import Gtk, GLib
 from pkg_resources import resource_string
 from pathlib import Path
 import requests
+import json
 import configparser
 import subprocess
 
@@ -30,9 +31,20 @@ from . import APP_ID, VERSION
 def main():
     global passwords
     passwords = LoginManager(
-        Path(GLib.get_user_config_dir()) / APP_ID / "passwords.cfg"
+        Path(GLib.get_user_config_dir()) / APP_ID / "passwords.json"
     )
-    print(passwords.path)
+
+    # Convert passwords.cfg to passwords.json
+    if not passwords.path.exists():
+        parser = configparser.ConfigParser()
+        parser.read(Path(GLib.get_user_config_dir()) / APP_ID / "passwords.cfg")
+        passwords.update(
+            **{
+                section: dict(parser[section])
+                for section in parser
+                if section != "DEFAULT"
+            }
+        )
 
     app = Gtk.Application(application_id=APP_ID)
     app.connect("activate", LauncherWindow)
@@ -66,18 +78,17 @@ def template(c):
     return Gtk.Template(string=resource_string(__name__, c.__gtype_name__ + ".ui"))(c)
 
 
-class LoginManager(configparser.ConfigParser):
+class LoginManager(dict):
     def __init__(self, path):
         super().__init__()
         self.path = Path(path)
         if self.path.exists():
-            self.read(self.path)
+            self.update(**json.loads(self.path.read_bytes()))
 
     def save(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         temp = self.path.with_suffix(".tmp")
-        with temp.open("w") as f:
-            self.write(f)
+        temp.write_text(json.dumps(self))
         temp.replace(self.path)
 
 
